@@ -6,7 +6,7 @@ import br.ifma.consultasmedicas.ports.in.RegistrarProntuarioUseCase;
 import java.util.Objects;
 
 /**
- * Adaptador de entrada (ex.: Controller REST/CLI). Aqui é simples para a atividade.
+ * Adaptador de entrada (ex.: Controller REST/CLI).
  * Responsabilidade: orquestrar chamadas ao caso de uso.
  */
 public class ProntuarioController {

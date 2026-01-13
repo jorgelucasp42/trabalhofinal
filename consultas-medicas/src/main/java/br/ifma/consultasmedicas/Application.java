@@ -20,6 +20,7 @@ public class Application {
         var prontuarioRepo = new InMemoryProntuarioRepository();
         var medicamentoRepo = new InMemoryMedicamentoRepository();
         var exameRepo = new InMemoryExameRepository();
+        var idGenerator = new InMemoryIdGenerator(100); // Começa IDs em 100
 
         // Seed (cadastros prévios de medicamentos e exames - pré-condição do enunciado)
         medicamentoRepo.salvar(new Medicamento(1, "Paracetamol"));
@@ -30,7 +31,7 @@ public class Application {
         // Domínio: paciente e consulta agendada (secretária agenda)
         Endereco endereco = new Endereco("Rua A", "123", "Apto 10", "Centro", "São Luís", "MA", "65000-000");
         Paciente paciente = new Paciente(1, "Ana", "Maria (mãe)", LocalDate.of(2020, 5, 3), "F", endereco,
-            List.of(new Telefone("98999990000", TelefoneTipo.CELULAR, "Maria")), null);
+                List.of(new Telefone("98999990000", TelefoneTipo.CELULAR, "Maria")), null);
         pacienteRepo.salvar(paciente);
 
         Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
@@ -39,31 +40,36 @@ public class Application {
         consultaRepo.salvar(consulta);
 
         // Core services (casos de uso)
-        var registrarProntuarioUC = new RegistrarProntuarioService(consultaRepo, prontuarioRepo, medicamentoRepo, exameRepo);
+        var registrarProntuarioUC = new RegistrarProntuarioService(consultaRepo, prontuarioRepo, medicamentoRepo,
+                exameRepo, idGenerator);
         var listarConsultasUC = new ListarConsultasDoDiaService(consultaRepo);
 
         // Adapter IN (controller)
         var prontuarioController = new ProntuarioController(registrarProntuarioUC);
 
         // Fluxo do caso de uso: listar consultas do dia
-        System.out.println("Consultas do dia:");
-        listarConsultasUC.listar(LocalDate.now()).forEach(c ->
-            System.out.printf("- %s | %s | novo=%s%n", c.getDataHora().toLocalTime(), c.getPaciente().getNomeCrianca(), c.isPacienteNovo())
-        );
+        System.out.println("=== Consultas do dia ===");
+        listarConsultasUC.listar(LocalDate.now()).forEach(c -> System.out.printf("- %s | %s | novo=%s%n",
+                c.getDataHora().toLocalTime(), c.getPaciente().getNomeCrianca(), c.isPacienteNovo()));
 
         // Registrar prontuário
+        System.out.println("\n=== Registrando Prontuário ===");
         var cmd = new RegistrarProntuarioCommand(
-            1,
-            15.2,
-            0.95,
-            "Febre e tosse",
-            "Hidratar e observar sinais de alarme",
-            List.of(new RegistrarProntuarioCommand.PrescricaoItemCommand(1, "10mg/kg", "VO a cada 6h", "3 dias")),
-            List.of(1)
-        );
+                1,
+                15.2,
+                0.95,
+                "Febre e tosse",
+                "Hidratar e observar sinais de alarme",
+                List.of(new RegistrarProntuarioCommand.PrescricaoItemCommand(1, "10mg/kg", "VO a cada 6h", "3 dias")),
+                List.of(1));
 
-        Integer prontuarioId = prontuarioController.registrarProntuario(cmd);
-        System.out.println("Prontuário registrado com ID: " + prontuarioId);
-        System.out.println("Status da consulta após registro: " + consultaRepo.buscarPorId(1).get().getStatus());
+        try {
+            var response = prontuarioController.registrarProntuario(cmd);
+            System.out.println("✓ Prontuário registrado com ID: " + response.getProntuarioId());
+            System.out.println("✓ Mensagem: " + response.getMensagem());
+            System.out.println("✓ Status da consulta: " + consultaRepo.buscarPorId(1).get().getStatus());
+        } catch (Exception e) {
+            System.err.println("✗ Erro ao registrar prontuário: " + e.getMessage());
+        }
     }
 }

@@ -15,16 +15,21 @@ public class InMemoryProntuarioRepository implements ProntuarioRepository {
     }
 
     @Override
+    public Optional<Prontuario> buscarPorId(Integer id) {
+        return Optional.ofNullable(store.get(id));
+    }
+
+    @Override
     public List<Prontuario> buscarPorPaciente(Integer pacienteId) {
         return store.values().stream()
-            .filter(p -> p.getConsulta().getPaciente().getId().equals(pacienteId))
-            .sorted(Comparator.comparing(p -> p.getConsulta().getDataHora()))
-            .collect(Collectors.toList());
+                .filter(p -> p.getConsulta().getPaciente().getId().equals(pacienteId))
+                .sorted(Comparator.comparing(p -> p.getConsulta().getDataHora()))
+                .collect(Collectors.toList());
     }
 
     @Override
     public boolean existeParaConsulta(Integer consultaId) {
         return store.values().stream()
-            .anyMatch(p -> p.getConsulta().getId().equals(consultaId));
+                .anyMatch(p -> p.getConsulta().getId().equals(consultaId));
     }
 }

@@ -1,9 +1,6 @@
 package br.ifma.consultasmedicas.adapters.in.controller;
 
-import br.ifma.consultasmedicas.adapters.in.dto.ErrorResponse;
-import br.ifma.consultasmedicas.adapters.in.dto.ProntuarioResponse;
 import br.ifma.consultasmedicas.core.domain.exception.DomainException;
-import br.ifma.consultasmedicas.core.domain.model.Prontuario;
 import br.ifma.consultasmedicas.ports.in.RegistrarProntuarioCommand;
 import br.ifma.consultasmedicas.ports.in.RegistrarProntuarioUseCase;
 

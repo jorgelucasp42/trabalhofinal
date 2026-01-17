@@ -19,4 +19,8 @@ public class InMemoryPacienteRepository implements PacienteRepository {
     public void salvar(Paciente paciente) {
         store.put(paciente.getId(), paciente);
     }
+
+    public boolean existePorId(Integer id) {
+        return store.containsKey(id);
+    }
 }

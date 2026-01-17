@@ -108,10 +108,18 @@ public class RegistrarProntuarioService implements RegistrarProntuarioUseCase {
         prontuarioRepository.salvar(prontuario);
         logger.info("Prontuário registrado com sucesso. ID: %d, Consulta: %d", prontuario.getId(), consulta.getId());
 
-        // Atualiza status da consulta
-        consulta.marcarRealizada();
+        // Atualiza status da consulta e associa o prontuário
+        consulta.marcarRealizada(prontuario.getId());
         consultaRepository.salvar(consulta);
-        logger.info("Status da consulta atualizado para REALIZADA");
+        logger.info("Status da consulta atualizado para REALIZADA com prontuário %d", prontuario.getId());
+
+        // Registra prontuário no paciente para histórico
+        consulta.getPaciente().registrarProntuario(prontuario.getId());
+
+        // Registra peso/altura no histórico do paciente
+        PesoAltura pesoAltura = new PesoAltura(command.getPeso(), command.getAltura(), java.time.LocalDate.now());
+        consulta.getPaciente().adicionarPesoAltura(pesoAltura);
+        logger.debug("Histórico de peso/altura adicionado ao paciente");
 
         return prontuario.getId();
     }

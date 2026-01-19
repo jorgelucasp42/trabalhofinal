@@ -16,6 +16,11 @@ public class InMemoryPacienteRepository implements PacienteRepository {
     }
 
     @Override
+    public Paciente obter(Integer id) {
+        return store.get(id);
+    }
+
+    @Override
     public void salvar(Paciente paciente) {
         store.put(paciente.getId(), paciente);
     }

@@ -1,4 +1,4 @@
-package br.ifma.consultasmedicas;
+﻿package br.ifma.consultasmedicas;
 
 import br.ifma.consultasmedicas.adapters.out.repository.InMemoryConsultaRepository;
 import br.ifma.consultasmedicas.adapters.out.repository.InMemoryExameRepository;
@@ -19,8 +19,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Teste de integração: fluxo completo da aplicação.
- * Testa: Entrada (Controller) → Domínio (Service) → Saída (Repository)
+ * Teste de integraÃ§Ã£o: fluxo completo da aplicaÃ§Ã£o.
+ * Testa: Entrada (Controller) â†’ DomÃ­nio (Service) â†’ SaÃ­da (Repository)
  */
 public class RegistrarProntuarioIntegrationTest {
 
@@ -53,12 +53,12 @@ public class RegistrarProntuarioIntegrationTest {
     void deveExecutarFluxoCompletoDeRegistroProntuario() {
         // Arrange: Setup de dados iniciais
         Endereco endereco = new Endereco("Rua A", "123", "Apto 10", "Centro",
-                "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "Ana Silva", "Maria (mãe)",
+                "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "Ana Silva", "Maria (mÃ£e)",
                 LocalDate.of(2020, 5, 3), "F", endereco,
                 List.of(new Telefone("98999990000", TelefoneTipo.CELULAR, "Maria")), null);
 
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
         Consulta consulta = new Consulta(1, paciente, medico,
                 LocalDateTime.of(2024, 1, 15, 14, 30), true);
 
@@ -72,7 +72,7 @@ public class RegistrarProntuarioIntegrationTest {
         assertEquals(1, consultasDia.get(0).getId());
         assertEquals(ConsultaStatus.AGENDADA, consultasDia.get(0).getStatus());
 
-        // Act: Registrar prontuário
+        // Act: Registrar prontuÃ¡rio
         var command = new RegistrarProntuarioCommand(
                 1,
                 15.2,
@@ -85,11 +85,11 @@ public class RegistrarProntuarioIntegrationTest {
 
         Integer prontuarioId = registrarService.registrar(command);
 
-        // Assert: Verificar que prontuário foi criado
+        // Assert: Verificar que prontuÃ¡rio foi criado
         assertNotNull(prontuarioId);
         assertTrue(prontuarioId > 0);
 
-        // Assert: Verificar que prontuário está no repositório
+        // Assert: Verificar que prontuÃ¡rio estÃ¡ no repositÃ³rio
         assertTrue(prontuarioRepo.buscarPorId(prontuarioId).isPresent());
         Prontuario prontuario = prontuarioRepo.buscarPorId(prontuarioId).get();
         assertEquals(15.2, prontuario.getPeso());
@@ -100,9 +100,9 @@ public class RegistrarProntuarioIntegrationTest {
         Consulta consultaAtualizada = consultaRepo.buscarPorId(1).get();
         assertEquals(ConsultaStatus.REALIZADA, consultaAtualizada.getStatus());
 
-        // Assert: Verificar que não pode registrar prontuário novamente
+        // Assert: Verificar que nÃ£o pode registrar prontuÃ¡rio novamente
         assertThrows(Exception.class, () -> registrarService.registrar(command),
-                "Deve impedir registro duplicado de prontuário para mesma consulta");
+                "Deve impedir registro duplicado de prontuÃ¡rio para mesma consulta");
     }
 
     @Test
@@ -110,21 +110,21 @@ public class RegistrarProntuarioIntegrationTest {
         // Setup adicional de medicamentos
         medicamentoRepo.salvar(new Medicamento(2, "Ibuprofeno"));
         medicamentoRepo.salvar(new Medicamento(3, "Amoxicilina"));
-        exameRepo.salvar(new Exame(2, "Raio-X de tórax"));
+        exameRepo.salvar(new Exame(2, "Raio-X de tÃ³rax"));
 
         Endereco endereco = new Endereco("Rua B", "456", null, "Bairro",
-                "São Luís", "MA", "65000-001");
-        Paciente paciente = new Paciente(2, "João Silva", "Pedro (pai)",
+                "SÃ£o LuÃ­s", "MA", "65000-001");
+        Paciente paciente = new Paciente(2, "JoÃ£o Silva", "Pedro (pai)",
                 LocalDate.of(2019, 3, 15), "M", endereco,
                 List.of(new Telefone("98988880000", TelefoneTipo.CELULAR, "Pedro")), null);
 
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
         Consulta consulta = new Consulta(2, paciente, medico,
                 LocalDateTime.now(), false);
 
         consultaRepo.salvar(consulta);
 
-        // Act: Registrar com múltiplos medicamentos e exames
+        // Act: Registrar com mÃºltiplos medicamentos e exames
         var command = new RegistrarProntuarioCommand(
                 2,
                 20.0,
@@ -142,24 +142,24 @@ public class RegistrarProntuarioIntegrationTest {
         // Assert
         assertNotNull(prontuarioId);
         Prontuario prontuario = prontuarioRepo.buscarPorId(prontuarioId).get();
-        assertEquals(3, prontuario.getPrescricoes().size(), "Deve ter 3 prescrições");
+        assertEquals(3, prontuario.getPrescricoes().size(), "Deve ter 3 prescriÃ§Ãµes");
         assertEquals(2, prontuario.getExames().size(), "Deve ter 2 exames");
     }
 
     @Test
     void deveValidarRegistroProntuarioComDadosInvalidos() {
         Endereco endereco = new Endereco("Rua C", "789", null, "Centro",
-                "São Luís", "MA", "65000-002");
-        Paciente paciente = new Paciente(3, "Maria Silva", "Ana (mãe)",
+                "SÃ£o LuÃ­s", "MA", "65000-002");
+        Paciente paciente = new Paciente(3, "Maria Silva", "Ana (mÃ£e)",
                 LocalDate.of(2021, 7, 20), "F", endereco,
                 List.of(new Telefone("98977770000", TelefoneTipo.CELULAR, "Ana")), null);
 
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
         Consulta consulta = new Consulta(3, paciente, medico, LocalDateTime.now(), true);
 
         consultaRepo.salvar(consulta);
 
-        // Act & Assert: Medicamento não existe
+        // Act & Assert: Medicamento nÃ£o existe
         var commandComMedicamentoInvalido = new RegistrarProntuarioCommand(
                 3, 15.0, 0.85, "Febre", "Obs",
                 List.of(new RegistrarProntuarioCommand.PrescricaoItemCommand(999, "x", "y", "z")),
@@ -168,7 +168,7 @@ public class RegistrarProntuarioIntegrationTest {
         assertThrows(Exception.class, () -> registrarService.registrar(commandComMedicamentoInvalido),
                 "Deve rejeitar medicamento inexistente");
 
-        // Act & Assert: Exame não existe
+        // Act & Assert: Exame nÃ£o existe
         var commandComExameInvalido = new RegistrarProntuarioCommand(
                 3, 15.0, 0.85, "Febre", "Obs",
                 List.of(),
@@ -178,3 +178,4 @@ public class RegistrarProntuarioIntegrationTest {
                 "Deve rejeitar exame inexistente");
     }
 }
+

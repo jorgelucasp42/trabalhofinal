@@ -6,5 +6,8 @@ import java.util.Optional;
 
 public interface PacienteRepository {
     Optional<Paciente> buscarPorId(Integer id);
+
+    Paciente obter(Integer id);
+
     void salvar(Paciente paciente);
 }

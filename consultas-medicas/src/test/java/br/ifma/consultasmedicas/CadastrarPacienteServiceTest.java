@@ -1,4 +1,4 @@
-package br.ifma.consultasmedicas;
+﻿package br.ifma.consultasmedicas;
 
 import br.ifma.consultasmedicas.adapters.out.repository.*;
 import br.ifma.consultasmedicas.core.domain.exception.DomainException;
@@ -27,7 +27,7 @@ public class CadastrarPacienteServiceTest {
         idGenerator = new InMemoryIdGenerator(1000);
         service = new CadastrarPacienteService(pacienteRepo, planoRepo, idGenerator);
 
-        // Registra plano de saúde para testes
+        // Registra plano de saÃºde para testes
         planoRepo.salvar(new PlanoSaude(1, "Unimed"));
         planoRepo.salvar(new PlanoSaude(2, "Amil"));
     }
@@ -36,11 +36,11 @@ public class CadastrarPacienteServiceTest {
     void deveRegistrarPacienteComSucesso() {
         // given
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua Principal", "123", "Apt 456", "Centro", "São Luís", "MA", "65000-000");
+                "Rua Principal", "123", "Apt 456", "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var telefoneCmd = new CadastrarPacienteCommand.TelefoneCommand(
                 "98987654321", TelefoneTipo.CELULAR, "Pessoal");
         var cmd = new CadastrarPacienteCommand(
-                "Maria Silva", "Mãe", LocalDate.of(1990, 5, 15),
+                "Maria Silva", "MÃ£e", LocalDate.of(1990, 5, 15),
                 "F", enderecoCmd, List.of(telefoneCmd), 1);
 
         // when
@@ -59,9 +59,9 @@ public class CadastrarPacienteServiceTest {
     void deveValidarNomePaciente() {
         // given - nome vazio
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "", "Mãe", LocalDate.of(1990, 5, 15),
+                "", "MÃ£e", LocalDate.of(1990, 5, 15),
                 "F", enderecoCmd, List.of(), 1);
 
         // when/then
@@ -72,9 +72,9 @@ public class CadastrarPacienteServiceTest {
     void deveValidarDataNascimento() {
         // given - data nascimento no futuro
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.now().plusYears(1),
+                "JoÃ£o Silva", "Pai", LocalDate.now().plusYears(1),
                 "M", enderecoCmd, List.of(), 1);
 
         // when/then
@@ -83,11 +83,11 @@ public class CadastrarPacienteServiceTest {
 
     @Test
     void deveValidarSexo() {
-        // given - sexo inválido
+        // given - sexo invÃ¡lido
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
                 "X", enderecoCmd, List.of(), 1);
 
         // when/then
@@ -96,12 +96,12 @@ public class CadastrarPacienteServiceTest {
 
     @Test
     void deveValidarPlanoSaudeExistente() {
-        // given - plano de saúde inexistente
+        // given - plano de saÃºde inexistente
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
-                "M", enderecoCmd, List.of(), 999 // ID inválido
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "M", enderecoCmd, List.of(), 999 // ID invÃ¡lido
         );
 
         // when/then
@@ -112,13 +112,13 @@ public class CadastrarPacienteServiceTest {
     void deveRegistrarPacienteComMultiplosTelefones() {
         // given
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var telefoneCmd1 = new CadastrarPacienteCommand.TelefoneCommand(
                 "98987654321", TelefoneTipo.CELULAR, "Pessoal");
         var telefoneCmd2 = new CadastrarPacienteCommand.TelefoneCommand(
                 "3221234567", TelefoneTipo.CELULAR, "Trabalho");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
                 "M", enderecoCmd, List.of(telefoneCmd1, telefoneCmd2), 1);
 
         // when
@@ -133,9 +133,9 @@ public class CadastrarPacienteServiceTest {
     void deveRegistrarPacienteSemTelefone() {
         // given
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
                 "M", enderecoCmd, List.of(), 1);
 
         // when
@@ -151,9 +151,9 @@ public class CadastrarPacienteServiceTest {
     void deveAssociarPlanoSaude() {
         // given
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
                 "M", enderecoCmd, List.of(), 2 // Amil
         );
 
@@ -170,12 +170,12 @@ public class CadastrarPacienteServiceTest {
     void deveRetornarIdGeradoSequencialmente() {
         // given - primeira registro
         var enderecoCmd = new CadastrarPacienteCommand.EnderecoCommand(
-                "Rua", "123", null, "Centro", "São Luís", "MA", "65000-000");
+                "Rua", "123", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
         var cmd1 = new CadastrarPacienteCommand(
-                "João Silva", "Pai", LocalDate.of(1990, 5, 15),
+                "JoÃ£o Silva", "Pai", LocalDate.of(1990, 5, 15),
                 "M", enderecoCmd, List.of(), 1);
         var cmd2 = new CadastrarPacienteCommand(
-                "Maria Silva", "Mãe", LocalDate.of(1992, 3, 10),
+                "Maria Silva", "MÃ£e", LocalDate.of(1992, 3, 10),
                 "F", enderecoCmd, List.of(), 1);
 
         // when
@@ -188,3 +188,4 @@ public class CadastrarPacienteServiceTest {
         assertTrue(id2 > id1);
     }
 }
+

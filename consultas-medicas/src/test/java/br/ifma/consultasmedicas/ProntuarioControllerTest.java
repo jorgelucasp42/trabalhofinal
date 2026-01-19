@@ -1,4 +1,4 @@
-package br.ifma.consultasmedicas;
+﻿package br.ifma.consultasmedicas;
 
 import br.ifma.consultasmedicas.adapters.in.controller.ProntuarioController;
 import br.ifma.consultasmedicas.adapters.out.repository.*;
@@ -52,7 +52,7 @@ public class ProntuarioControllerTest {
 
         assertThrows(IllegalArgumentException.class,
                 () -> controller.registrarProntuario(cmd),
-                "Deve validar consultaId obrigatório");
+                "Deve validar consultaId obrigatÃ³rio");
     }
 
     @Test
@@ -106,16 +106,16 @@ public class ProntuarioControllerTest {
 
         var response = controller.registrarProntuario(cmd);
 
-        assertNotNull(response, "Response não pode ser nulo");
-        assertNotNull(response.getProntuarioId(), "ProntuarioId não pode ser nulo");
+        assertNotNull(response, "Response nÃ£o pode ser nulo");
+        assertNotNull(response.getProntuarioId(), "ProntuarioId nÃ£o pode ser nulo");
         assertTrue(response.getProntuarioId() > 0, "ProntuarioId deve ser positivo");
-        assertNotNull(response.getMensagem(), "Mensagem não pode ser nula");
+        assertNotNull(response.getMensagem(), "Mensagem nÃ£o pode ser nula");
         assertTrue(response.getMensagem().contains("sucesso"), "Mensagem deve indicar sucesso");
     }
 
     @Test
     void deveRelancarDomainException() {
-        // Não setup a consulta, então vai falhar ao buscar
+        // NÃ£o setup a consulta, entÃ£o vai falhar ao buscar
         var cmd = new RegistrarProntuarioCommand(
                 999, 12.0, 0.80, "Febre", "Obs",
                 List.of(new RegistrarProntuarioCommand.PrescricaoItemCommand(1, "x", "y", "z")),
@@ -123,7 +123,7 @@ public class ProntuarioControllerTest {
 
         assertThrows(DomainException.class,
                 () -> controller.registrarProntuario(cmd),
-                "Deve relançar DomainException");
+                "Deve relanÃ§ar DomainException");
     }
 
     @Test
@@ -133,13 +133,14 @@ public class ProntuarioControllerTest {
                 "Deve validar comando nulo");
     }
 
-    // Método auxiliar para setup de consulta
+    // MÃ©todo auxiliar para setup de consulta
     private void setupConsulta() {
-        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "João", "Pai", LocalDate.of(2019, 1, 1), "M",
+        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "JoÃ£o", "Pai", LocalDate.of(2019, 1, 1), "M",
                 endereco, List.of(new Telefone("9800000000", TelefoneTipo.CELULAR, "Pai")), null);
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
         Consulta consulta = new Consulta(10, paciente, medico, LocalDateTime.now(), false);
         consultaRepo.salvar(consulta);
     }
 }
+

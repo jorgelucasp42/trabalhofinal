@@ -33,11 +33,28 @@ public class JpaConsultaRepository implements ConsultaRepository {
     }
 
     @Override
+    public Consulta obter(Integer id) {
+        return buscarPorId(id).orElse(null);
+    }
+
+    @Override
     public List<Consulta> buscarPorData(LocalDate data) {
         return crudRepository.findByData(data)
                 .stream()
                 .map(this::mapToDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Consulta> obterPorData(LocalDate data) {
+        return buscarPorData(data);
+    }
+
+    @Override
+    public List<Consulta> obterPorPaciente(Integer pacienteId) {
+        // Implementação a ser feita quando necessário buscar por paciente
+        // Por enquanto, retorna lista vazia
+        return List.of();
     }
 
     @Override

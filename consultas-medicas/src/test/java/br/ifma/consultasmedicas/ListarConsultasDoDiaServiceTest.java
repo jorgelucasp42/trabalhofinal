@@ -1,4 +1,4 @@
-package br.ifma.consultasmedicas;
+﻿package br.ifma.consultasmedicas;
 
 import br.ifma.consultasmedicas.adapters.out.repository.InMemoryConsultaRepository;
 import br.ifma.consultasmedicas.core.domain.model.*;
@@ -21,17 +21,17 @@ public class ListarConsultasDoDiaServiceTest {
         List<Consulta> resultado = service.listar(LocalDate.of(2024, 1, 15));
 
         assertNotNull(resultado);
-        assertTrue(resultado.isEmpty(), "Deve retornar vazio quando não há consultas");
+        assertTrue(resultado.isEmpty(), "Deve retornar vazio quando nÃ£o hÃ¡ consultas");
     }
 
     @Test
     void deveListarConsultasFiltradasPorData() {
         var consultaRepo = new InMemoryConsultaRepository();
 
-        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "João", "Pai", LocalDate.of(2019, 1, 1), "M",
+        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "JoÃ£o", "Pai", LocalDate.of(2019, 1, 1), "M",
                 endereco, List.of(new Telefone("9800000000", TelefoneTipo.CELULAR, "Pai")), null);
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
 
         // Adicionar consultas em datas diferentes
         LocalDate data1 = LocalDate.of(2024, 1, 15);
@@ -60,19 +60,19 @@ public class ListarConsultasDoDiaServiceTest {
     void deveIgnorarOutrosDias() {
         var consultaRepo = new InMemoryConsultaRepository();
 
-        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "João", "Pai", LocalDate.of(2019, 1, 1), "M",
+        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "JoÃ£o", "Pai", LocalDate.of(2019, 1, 1), "M",
                 endereco, List.of(new Telefone("9800000000", TelefoneTipo.CELULAR, "Pai")), null);
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
 
-        // Adicionar consultas em várias datas
+        // Adicionar consultas em vÃ¡rias datas
         for (int dia = 1; dia <= 31; dia++) {
             try {
                 Consulta c = new Consulta(100 + dia, paciente, medico,
                         LocalDateTime.of(2024, 1, dia, 9, 0), false);
                 consultaRepo.salvar(c);
             } catch (Exception e) {
-                // Dia inválido, pular
+                // Dia invÃ¡lido, pular
             }
         }
 
@@ -90,12 +90,12 @@ public class ListarConsultasDoDiaServiceTest {
     void deveRetornarOrdenado() {
         var consultaRepo = new InMemoryConsultaRepository();
 
-        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "João", "Pai", LocalDate.of(2019, 1, 1), "M",
+        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "JoÃ£o", "Pai", LocalDate.of(2019, 1, 1), "M",
                 endereco, List.of(new Telefone("9800000000", TelefoneTipo.CELULAR, "Pai")), null);
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
 
-        // Adicionar consultas em ordem reversa de horário
+        // Adicionar consultas em ordem reversa de horÃ¡rio
         Consulta c1 = new Consulta(10, paciente, medico, LocalDateTime.of(2024, 1, 15, 15, 0), false);
         Consulta c2 = new Consulta(11, paciente, medico, LocalDateTime.of(2024, 1, 15, 9, 0), false);
         Consulta c3 = new Consulta(12, paciente, medico, LocalDateTime.of(2024, 1, 15, 12, 0), false);
@@ -111,7 +111,7 @@ public class ListarConsultasDoDiaServiceTest {
 
         // Assert
         assertEquals(3, resultado.size());
-        // Deve estar ordenado por horário
+        // Deve estar ordenado por horÃ¡rio
         assertEquals(9, resultado.get(0).getDataHora().getHour(), "Primeira deve ser 9h");
         assertEquals(12, resultado.get(1).getDataHora().getHour(), "Segunda deve ser 12h");
         assertEquals(15, resultado.get(2).getDataHora().getHour(), "Terceira deve ser 15h");
@@ -121,10 +121,10 @@ public class ListarConsultasDoDiaServiceTest {
     void deveFiltrarPorDataExata() {
         var consultaRepo = new InMemoryConsultaRepository();
 
-        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "São Luís", "MA", "65000-000");
-        Paciente paciente = new Paciente(1, "João", "Pai", LocalDate.of(2019, 1, 1), "M",
+        Endereco endereco = new Endereco("Rua A", "1", null, "Centro", "SÃ£o LuÃ­s", "MA", "65000-000");
+        Paciente paciente = new Paciente(1, "JoÃ£o", "Pai", LocalDate.of(2019, 1, 1), "M",
                 endereco, List.of(new Telefone("9800000000", TelefoneTipo.CELULAR, "Pai")), null);
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Pediatria", "CRM-MA 12345");
 
         // Adicionar consultas
         Consulta c1 = new Consulta(10, paciente, medico, LocalDateTime.of(2024, 1, 14, 23, 59), false);
@@ -148,3 +148,4 @@ public class ListarConsultasDoDiaServiceTest {
                 "Todas as consultas devem ser do dia 15");
     }
 }
+

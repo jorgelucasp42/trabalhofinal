@@ -16,11 +16,29 @@ public class InMemoryConsultaRepository implements ConsultaRepository {
     }
 
     @Override
+    public Consulta obter(Integer id) {
+        return store.get(id);
+    }
+
+    @Override
     public List<Consulta> buscarPorData(LocalDate data) {
         return store.values().stream()
-            .filter(c -> c.getDataHora().toLocalDate().equals(data))
-            .sorted(Comparator.comparing(Consulta::getDataHora))
-            .collect(Collectors.toList());
+                .filter(c -> c.getDataHora().toLocalDate().equals(data))
+                .sorted(Comparator.comparing(Consulta::getDataHora))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Consulta> obterPorData(LocalDate data) {
+        return buscarPorData(data);
+    }
+
+    @Override
+    public List<Consulta> obterPorPaciente(Integer pacienteId) {
+        return store.values().stream()
+                .filter(c -> c.getPaciente().getId().equals(pacienteId))
+                .sorted(Comparator.comparing(Consulta::getDataHora))
+                .collect(Collectors.toList());
     }
 
     @Override

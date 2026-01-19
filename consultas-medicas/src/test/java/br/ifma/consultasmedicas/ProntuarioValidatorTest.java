@@ -1,4 +1,4 @@
-package br.ifma.consultasmedicas;
+﻿package br.ifma.consultasmedicas;
 
 import br.ifma.consultasmedicas.core.domain.model.ProntuarioValidator;
 import org.junit.jupiter.api.Test;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Testes para validações de dados médicos.
+ * Testes para validaÃ§Ãµes de dados mÃ©dicos.
  * Valida regras de altura, peso e IMC.
  */
 public class ProntuarioValidatorTest {
@@ -80,6 +80,7 @@ public class ProntuarioValidatorTest {
         assertEquals("Sobrepeso", ProntuarioValidator.classificarIMC(27.0));
         assertEquals("Obesidade grau I", ProntuarioValidator.classificarIMC(32.0));
         assertEquals("Obesidade grau II", ProntuarioValidator.classificarIMC(37.0));
-        assertEquals("Obesidade grau III (mórbida)", ProntuarioValidator.classificarIMC(45.0));
+        assertEquals("Obesidade grau III (mÃ³rbida)", ProntuarioValidator.classificarIMC(45.0));
     }
 }
+

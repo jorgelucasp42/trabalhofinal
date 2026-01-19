@@ -34,7 +34,7 @@ public class Application {
                 List.of(new Telefone("98999990000", TelefoneTipo.CELULAR, "Maria")), null);
         pacienteRepo.salvar(paciente);
 
-        Medico medico = new Medico(1, "Dr. Vilegas", "CRM-MA 12345");
+        Medico medico = new Medico(1, "Dr. Vilegas", "Cardiologia", "CRM-MA 12345");
 
         Consulta consulta = new Consulta(1, paciente, medico, LocalDateTime.now().withHour(9).withMinute(0), true);
         consultaRepo.salvar(consulta);

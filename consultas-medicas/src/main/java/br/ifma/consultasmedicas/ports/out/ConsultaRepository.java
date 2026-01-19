@@ -8,6 +8,14 @@ import java.util.Optional;
 
 public interface ConsultaRepository {
     Optional<Consulta> buscarPorId(Integer id);
+
+    Consulta obter(Integer id);
+
     List<Consulta> buscarPorData(LocalDate data);
+
+    List<Consulta> obterPorData(LocalDate data);
+
+    List<Consulta> obterPorPaciente(Integer pacienteId);
+
     void salvar(Consulta consulta);
 }

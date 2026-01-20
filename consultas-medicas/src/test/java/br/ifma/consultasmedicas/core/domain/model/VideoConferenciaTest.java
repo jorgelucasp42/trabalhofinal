@@ -1,4 +1,4 @@
-﻿package br.ifma.consultasmedicas.core.domain.model;
+package br.ifma.consultasmedicas.core.domain.model;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-﻿package br.ifma.consultasmedicas.adapters.out.repository.inmemory;
+package br.ifma.consultasmedicas.adapters.out.repository.inmemory;
 
 import br.ifma.consultasmedicas.core.domain.model.Medico;
 import br.ifma.consultasmedicas.ports.out.MedicoRepository;

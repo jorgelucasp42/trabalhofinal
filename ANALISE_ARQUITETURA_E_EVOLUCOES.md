@@ -104,14 +104,13 @@ adapters → ports → services → domain
 
 ## EVOLUÇÕES ARQUITETURAIS PROPOSTAS
 
----
 
 ## I. Atendimento Online
 
 **Funcionalidades:**  
 Agendamento de consultas, visualização de histórico, pagamentos online.
 
-### 🛠️ Padrões de Projeto Aplicáveis
+### Padrões de Projeto Aplicáveis
 
 - **Adapter**  
   - `VideoConferenciaProvider` (ex.: `ZoomAdapter`, `TeamsAdapter`)  
@@ -127,7 +126,7 @@ Agendamento de consultas, visualização de histórico, pagamentos online.
 - **Service / Application Service (DDD)**  
   - Orquestração de regras: `AgendarConsultaOnlineService`, `ProcessarPagamentoService`.
 
-### 💡 SOLID
+### SOLID
 
 - **SRP:** Cada serviço (ex.: `AgendarConsultaOnlineService`, `ProcessarPagamentoService`) tem responsabilidade única. Portas de saída são focadas.
 - **OCP:** Novos provedores de vídeo ou pagamento podem ser adicionados por novos adapters, sem alterar os serviços de domínio.

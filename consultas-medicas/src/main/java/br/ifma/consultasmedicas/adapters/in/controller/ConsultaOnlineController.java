@@ -5,6 +5,7 @@ import br.ifma.consultasmedicas.adapters.in.dto.AgendarConsultaOnlineResponse;
 import br.ifma.consultasmedicas.core.domain.exception.DomainException;
 import br.ifma.consultasmedicas.ports.in.AgendarConsultaOnlineCommand;
 import br.ifma.consultasmedicas.ports.in.AgendarConsultaOnlineUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
  * Responsabilidade: Mapear requisições HTTP para comandos de domínio
  * e respostas de domínio para DTOs.
  */
+@Service
 public class ConsultaOnlineController {
     private final AgendarConsultaOnlineUseCase agendarConsultaOnlineUseCase;
 

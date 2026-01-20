@@ -5,6 +5,7 @@ import br.ifma.consultasmedicas.core.domain.exception.DomainException;
 import br.ifma.consultasmedicas.ports.in.PagamentoResponse;
 import br.ifma.consultasmedicas.ports.in.ProcessarPagamentoCommand;
 import br.ifma.consultasmedicas.ports.in.ProcessarPagamentoUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ import java.util.Objects;
  * Responsabilidade: Mapear requisições HTTP para comandos de domínio
  * e respostas de domínio para DTOs.
  */
+@Service
 public class PagamentoController {
     private final ProcessarPagamentoUseCase processarPagamentoUseCase;
 

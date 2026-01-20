@@ -3,6 +3,7 @@ package br.ifma.consultasmedicas.adapters.in.controller;
 import br.ifma.consultasmedicas.core.domain.exception.DomainException;
 import br.ifma.consultasmedicas.ports.in.RegistrarProntuarioCommand;
 import br.ifma.consultasmedicas.ports.in.RegistrarProntuarioUseCase;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
@@ -16,6 +17,7 @@ import java.util.Objects;
  * - IllegalArgumentException: validação de input (422 Unprocessable Entity)
  * - Exception genérica: erro inesperado (500 Internal Server Error)
  */
+@Service
 public class ProntuarioController {
     private final RegistrarProntuarioUseCase registrarProntuarioUseCase;
 

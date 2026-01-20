@@ -20,6 +20,17 @@ public class Endereco {
         this.estadoUf = Objects.requireNonNull(estadoUf);
         this.cep = Objects.requireNonNull(cep);
     }
+    public Endereco(Endereco enderecoObj) {
+        this(
+                Objects.requireNonNull(enderecoObj).getLogradouro(),
+                enderecoObj.getNumero(),
+                enderecoObj.getComplemento(),
+                enderecoObj.getBairro(),
+                enderecoObj.getCidade(),
+                enderecoObj.getEstadoUf(),
+                enderecoObj.getCep()
+        );
+    }
 
     public String getLogradouro() { return logradouro; }
     public String getNumero() { return numero; }

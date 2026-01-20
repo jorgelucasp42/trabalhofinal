@@ -55,4 +55,31 @@ public class UseCaseConfig {
                 idGenerator
         );
     }
+
+    @Bean
+    public CadastrarPacienteUseCase cadastrarPacienteUseCase(
+            PacienteRepository pacienteRepository,
+            PlanoSaudeRepository planoSaudeRepository,
+            IdGenerator idGenerator
+    ) {
+        return new CadastrarPacienteService(
+                pacienteRepository,
+                planoSaudeRepository,
+                idGenerator
+        );
+    }
+
+    @Bean
+    public ListarConsultasDoDiaUseCase listarConsultasDoDiaUseCase(
+            ConsultaRepository consultaRepository
+    ) {
+        return new ListarConsultasDoDiaService(consultaRepository);
+    }
+
+    @Bean
+    public ListarMedicosUseCase listarMedicosUseCase(
+            MedicoRepository medicoRepository
+    ) {
+        return new ListarMedicosService(medicoRepository);
+    }
 }

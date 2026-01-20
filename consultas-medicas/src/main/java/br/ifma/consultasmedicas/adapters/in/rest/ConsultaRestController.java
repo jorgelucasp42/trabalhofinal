@@ -3,6 +3,7 @@ package br.ifma.consultasmedicas.adapters.in.rest;
 import br.ifma.consultasmedicas.adapters.in.controller.ConsultaController;
 import br.ifma.consultasmedicas.core.domain.exception.DomainException;
 import br.ifma.consultasmedicas.ports.in.AgendarConsultaOnlineCommand;
+import br.ifma.consultasmedicas.ports.in.AgendarConsultaPresencialCommand;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,42 @@ public class ConsultaRestController {
     public ResponseEntity<?> agendarConsultaOnline(@RequestBody AgendarConsultaOnlineCommand command) {
         try {
             var response = controller.agendarConsultaOnline(command);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(new AgendamentoConsultaResponse(
+                            response.getConsultaId(),
+                            response.getMensagem(),
+                            LocalDateTime.now()));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(new ErrorResponse(
+                            HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                            e.getMessage(),
+                            LocalDateTime.now()));
+        } catch (DomainException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(
+                            HttpStatus.BAD_REQUEST.value(),
+                            e.getMessage(),
+                            LocalDateTime.now()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new ErrorResponse(
+                            HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                            "Erro interno do servidor: " + e.getMessage(),
+                            LocalDateTime.now()));
+        }
+    }
+
+    /**
+     * Agenda uma nova consulta presencial.
+     *
+     * @param command dados da consulta
+     * @return resposta com ID da consulta criada
+     */
+    @PostMapping("/presencial")
+    public ResponseEntity<?> agendarConsultaPresencial(@RequestBody AgendarConsultaPresencialCommand command) {
+        try {
+            var response = controller.agendarConsultaPresencial(command);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(new AgendamentoConsultaResponse(
                             response.getConsultaId(),

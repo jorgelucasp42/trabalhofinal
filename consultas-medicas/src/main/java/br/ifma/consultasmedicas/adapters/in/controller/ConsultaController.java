@@ -4,6 +4,8 @@ import br.ifma.consultasmedicas.core.domain.exception.DomainException;
 import br.ifma.consultasmedicas.core.domain.model.Consulta;
 import br.ifma.consultasmedicas.ports.in.AgendarConsultaOnlineCommand;
 import br.ifma.consultasmedicas.ports.in.AgendarConsultaOnlineUseCase;
+import br.ifma.consultasmedicas.ports.in.AgendarConsultaPresencialCommand;
+import br.ifma.consultasmedicas.ports.in.AgendarConsultaPresencialUseCase;
 import br.ifma.consultasmedicas.ports.in.ListarConsultasDoDiaUseCase;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +28,15 @@ import java.util.stream.Collectors;
 public class ConsultaController {
     private final ListarConsultasDoDiaUseCase listarConsultasDoDiaUseCase;
     private final AgendarConsultaOnlineUseCase agendarConsultaOnlineUseCase;
+    private final AgendarConsultaPresencialUseCase agendarConsultaPresencialUseCase;
 
     public ConsultaController(
             ListarConsultasDoDiaUseCase listarConsultasDoDiaUseCase,
-            AgendarConsultaOnlineUseCase agendarConsultaOnlineUseCase) {
+            AgendarConsultaOnlineUseCase agendarConsultaOnlineUseCase,
+            AgendarConsultaPresencialUseCase agendarConsultaPresencialUseCase) {
         this.listarConsultasDoDiaUseCase = Objects.requireNonNull(listarConsultasDoDiaUseCase);
         this.agendarConsultaOnlineUseCase = Objects.requireNonNull(agendarConsultaOnlineUseCase);
+        this.agendarConsultaPresencialUseCase = Objects.requireNonNull(agendarConsultaPresencialUseCase);
     }
 
     /**
@@ -73,9 +78,47 @@ public class ConsultaController {
     }
 
     /**
-     * Valida os dados de entrada antes de processar.
+     * Agenda uma nova consulta presencial.
+     * 
+     * @param command dados da consulta a agendar
+     * @return resposta com ID da consulta criada
+     * @throws DomainException          se houver erro de regra de negócio
+     * @throws IllegalArgumentException se houver erro de validação
+     */
+    public ConsultaAgendamentoResponse agendarConsultaPresencial(AgendarConsultaPresencialCommand command) {
+        try {
+            validarCommandPresencial(command);
+            Integer consultaId = agendarConsultaPresencialUseCase.agendar(command);
+            return new ConsultaAgendamentoResponse(consultaId, "Consulta presencial agendada com sucesso");
+        } catch (DomainException e) {
+            throw e; // Relança para tratamento em nível superior
+        } catch (IllegalArgumentException e) {
+            throw e; // Relança para tratamento em nível superior
+        }
+    }
+
+    /**
+     * Valida os dados de entrada antes de processar (consulta online).
      */
     private void validarCommand(AgendarConsultaOnlineCommand command) {
+        if (command == null) {
+            throw new IllegalArgumentException("Comando não pode ser nulo");
+        }
+        if (command.getPacienteId() == null || command.getPacienteId() <= 0) {
+            throw new IllegalArgumentException("ID do paciente é obrigatório e deve ser positivo");
+        }
+        if (command.getMedicoId() == null || command.getMedicoId() <= 0) {
+            throw new IllegalArgumentException("ID do médico é obrigatório e deve ser positivo");
+        }
+        if (command.getDataHora() == null) {
+            throw new IllegalArgumentException("Data/hora é obrigatória");
+        }
+    }
+
+    /**
+     * Valida os dados de entrada antes de processar (consulta presencial).
+     */
+    private void validarCommandPresencial(AgendarConsultaPresencialCommand command) {
         if (command == null) {
             throw new IllegalArgumentException("Comando não pode ser nulo");
         }

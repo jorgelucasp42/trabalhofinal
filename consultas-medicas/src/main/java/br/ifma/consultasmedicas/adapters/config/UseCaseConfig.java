@@ -82,4 +82,27 @@ public class UseCaseConfig {
     ) {
         return new ListarMedicosService(medicoRepository);
     }
+
+    @Bean
+    public AgendarConsultaPresencialUseCase agendarConsultaPresencialUseCase(
+            ConsultaRepository consultaRepository,
+            PacienteRepository pacienteRepository,
+            MedicoRepository medicoRepository,
+            IdGenerator idGenerator
+    ) {
+        return new AgendarConsultaPresencialService(
+                consultaRepository,
+                pacienteRepository,
+                medicoRepository,
+                idGenerator
+        );
+    }
+
+    @Bean
+    public CadastrarMedicoUseCase cadastrarMedicoUseCase(
+            MedicoRepository medicoRepository,
+            IdGenerator idGenerator
+    ) {
+        return new CadastrarMedicoService(medicoRepository, idGenerator);
+    }
 }

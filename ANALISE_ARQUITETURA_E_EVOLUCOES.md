@@ -1,3 +1,5 @@
+Alunos: Jorge Lucas, Rafael de Sousa Simas, Edilson Marques
+
 # 📋 ANÁLISE COMPLETA - ARQUITETURA HEXAGONAL E EVOLUÇÕES
 
 ## ✅ VALIDAÇÃO DA ARQUITETURA HEXAGONAL - ETAPA 01
